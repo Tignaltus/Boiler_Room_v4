@@ -7,11 +7,17 @@ import java.nio.file.Paths;
 
 public class customerCSV
 {
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args)
     {
-        Path csvinput = Paths.get("boilerroom.csv");
+        Path csvinput = null;
+        List<Customer> customers = new ArrayList<>();
 
-        List<Customer> customers = Files.lines(csvinput)
+        try
+        {
+            csvinput = Paths.get("boilerroom.csv");
+            System.out.println("File found");
+
+            customers = Files.lines(csvinput)
                 .skip(1)
                 .map(line -> line.split(","))
                 .map(p -> new Customer(
@@ -20,6 +26,11 @@ public class customerCSV
                         Double.parseDouble(p[2].trim())
                 ))
                 .toList();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error: " + e.getMessage());
+        }
 
         List<String> topCustomer = customers.stream()
                 .filter(c -> c.getOrderValue()>=1000)
@@ -30,7 +41,15 @@ public class customerCSV
 
         System.out.println(topCustomer);
 
-        Path filepath = Paths.get("report.txt");
-        Files.write(filepath, topCustomer);
+        try
+        {
+            Path filepath = Paths.get("report.txt");
+            Files.write(filepath, topCustomer);
+            System.out.println("Report created");
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }
