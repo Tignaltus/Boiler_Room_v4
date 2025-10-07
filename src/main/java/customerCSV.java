@@ -32,6 +32,11 @@ public class customerCSV
             System.out.println("Error: " + e.getMessage());
         }
 
+        if (csvinput == null)
+        {
+            return;
+        }
+
         List<String> topCustomer = customers.stream()
                 .filter(c -> c.getOrderValue()>=1000)
                 .sorted((val1, val2)-> (int) (val2.getOrderValue() - val1.getOrderValue()))
